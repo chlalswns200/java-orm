@@ -16,10 +16,12 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member1 = entityManager.find(Member.class, 150L);
-            member1.setName("ZZZZ");
+            Member member = new Member();
+            member.setId(1L);
+            member.setUsername("A");
+            member.setRoleType(RoleType.USER);
+            entityManager.persist(member);
 
-            System.out.println("======================"); //  구분선 이후  tx.commit()에서 쿼리가 나간다
             tx.commit();
 
         } catch (Exception e) {
