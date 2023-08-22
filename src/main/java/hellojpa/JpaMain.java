@@ -17,10 +17,13 @@ public class JpaMain {
 
         try {
             Member member = new Member();
-            member.setId(1L);
-            member.setUsername("A");
-            member.setRoleType(RoleType.USER);
+            member.setUsername("C");
+
+            System.out.println("======================");
             entityManager.persist(member);
+            System.out.println("member.getId() = " + member.getId());
+            //identity 전략에서는 pk값을 알아야 하기 때문에 commit 시점이 아닌 persist 시점에 insert query가 나간다.
+            System.out.println("======================");
 
             tx.commit();
 
