@@ -16,15 +16,20 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("teamA");
+            entityManager.persist(team);
+
             Member member = new Member();
-            member.setUsername("C");
+            member.setUsername("member1");
+            member.setTeam(team);
 
-            System.out.println("======================");
             entityManager.persist(member);
-            System.out.println("member.getId() = " + member.getId());
-            //identity 전략에서는 pk값을 알아야 하기 때문에 commit 시점이 아닌 persist 시점에 insert query가 나간다.
-            System.out.println("======================");
 
+            Member findMember = entityManager.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam.getName() = " + findTeam.getName());
             tx.commit();
 
         } catch (Exception e) {
