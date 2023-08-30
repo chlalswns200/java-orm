@@ -17,31 +17,23 @@ public class JpaMain {
 
         try {
 
-            Team team = new Team();
-            team.setName("teamA");
-            entityManager.persist(team);
+            Movie movie = new Movie();
+            movie.setDirector("DirectorA");
+            movie.setActor("ActorA");
+            movie.setName("오펜하이머");
+            movie.setPrice(12000);
 
-            Member member = new Member();
-            member.setUsername("member1");
-            entityManager.persist(member);
 
-            team.addMember(member);
-
+            entityManager.persist(movie);
             entityManager.flush();
             entityManager.clear();
-
-            Team findTeam = entityManager.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            for (Member findMember : members) {
-                System.out.println("findMember.getUsername() = " + findMember.getUsername());
-            }
 
             tx.commit();
 
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             tx.rollback();
         } finally {
             entityManager.close();
