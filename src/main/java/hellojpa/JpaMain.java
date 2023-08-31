@@ -1,7 +1,5 @@
 package hellojpa;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -18,12 +16,19 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("UserA");
-            member.setCreatedBy("Choi");
-            member.setCreatedDate(LocalDateTime.now());
+            Member memberA = new Member();
+            memberA.setUsername("userA");
+            entityManager.persist(memberA);
 
-            entityManager.persist(member);
+            entityManager.flush();
+            entityManager.clear();
+
+            Member reference = entityManager.getReference(Member.class, memberA.getId());
+            System.out.println("reference.getClass() = " + reference.getClass());
+            reference.getUsername();
+            System.out.println("emf = " + emf.getPersistenceUnitUtil().isLoaded(reference));
+
+            
             tx.commit();
 
         } catch (Exception e) {
