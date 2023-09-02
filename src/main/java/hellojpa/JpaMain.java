@@ -1,5 +1,6 @@
 package hellojpa;
 
+import java.awt.MenuBar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,19 +17,23 @@ public class JpaMain {
 
         try {
 
+            Team team = new Team();
+            team.setName("teamA");
+            entityManager.persist(team);
+
             Member memberA = new Member();
             memberA.setUsername("userA");
+            memberA.setTeam(team);
             entityManager.persist(memberA);
 
             entityManager.flush();
             entityManager.clear();
 
-            Member reference = entityManager.getReference(Member.class, memberA.getId());
-            System.out.println("reference.getClass() = " + reference.getClass());
-            reference.getUsername();
-            System.out.println("emf = " + emf.getPersistenceUnitUtil().isLoaded(reference));
+            Member findMember = entityManager.find(Member.class, memberA.getId());
+            System.out.println("findMember.getTeam().getClass() = " + findMember.getTeam().getClass());
 
-            
+            System.out.println("=========query=======");
+            System.out.println("findMember.getTeam().getName() = " + findMember.getTeam().getName());
             tx.commit();
 
         } catch (Exception e) {
