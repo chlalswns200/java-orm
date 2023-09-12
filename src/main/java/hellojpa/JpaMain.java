@@ -16,13 +16,20 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member =  new Member();
-            member.setUsername("hello");
-            member.setHomeAddress(new Address("city","street","100"));
-            member.setWordPeriod(new Period());
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("city1","street1","10000"));
+
+            member.getFavoriteFood().add("치킨");
+            member.getFavoriteFood().add("족발");
+            member.getFavoriteFood().add("피자");
+
+            member.getAddressHistory().add(new AddressEntity("old1", "old1", "10003"));
+            member.getAddressHistory().add(new AddressEntity("ol2", "old2", "10005"));
 
             entityManager.persist(member);
             tx.commit();
+
 
         } catch (Exception e) {
             e.printStackTrace();

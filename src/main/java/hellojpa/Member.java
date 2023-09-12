@@ -1,6 +1,13 @@
 package hellojpa;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,9 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity()
+@Entity
 public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +28,6 @@ public class Member extends BaseEntity{
     private Long id;
     @Column(name = "USERNAME")
     private String username;
-
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
@@ -36,6 +41,19 @@ public class Member extends BaseEntity{
     private Period wordPeriod;
     @Embedded
     private Address homeAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD",joinColumns  = @JoinColumn(name="MEMBER_ID"))
+    @Column(name="FOOD_NAME")
+    private Set<String> favoriteFood = new HashSet<>();
+
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS",joinColumns  = @JoinColumn(name="MEMBER_ID"))
+//    private List<Address> addressHistory = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     public Member() {
     }
@@ -92,5 +110,21 @@ public class Member extends BaseEntity{
 
     public void setHomeAddress(Address homeAddress) {
         this.homeAddress = homeAddress;
+    }
+
+    public Set<String> getFavoriteFood() {
+        return favoriteFood;
+    }
+
+    public void setFavoriteFood(Set<String> favoriteFood) {
+        this.favoriteFood = favoriteFood;
+    }
+
+    public List<AddressEntity> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
+        this.addressHistory = addressHistory;
     }
 }
