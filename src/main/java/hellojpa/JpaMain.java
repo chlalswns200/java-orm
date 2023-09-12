@@ -16,24 +16,12 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Member member =  new Member();
+            member.setUsername("hello");
+            member.setHomeAddress(new Address("city","street","100"));
+            member.setWordPeriod(new Period());
 
-            Team team = new Team();
-            team.setName("teamA");
-            entityManager.persist(team);
-
-            Member memberA = new Member();
-            memberA.setUsername("userA");
-            memberA.setTeam(team);
-            entityManager.persist(memberA);
-
-            entityManager.flush();
-            entityManager.clear();
-
-            Member findMember = entityManager.find(Member.class, memberA.getId());
-            System.out.println("findMember.getTeam().getClass() = " + findMember.getTeam().getClass());
-
-            System.out.println("=========query=======");
-            System.out.println("findMember.getTeam().getName() = " + findMember.getTeam().getName());
+            entityManager.persist(member);
             tx.commit();
 
         } catch (Exception e) {
