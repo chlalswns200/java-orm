@@ -1,6 +1,7 @@
 package hellojpa;
 
 import java.awt.MenuBar;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,18 +17,11 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setHomeAddress(new Address("city1","street1","10000"));
-
-            member.getFavoriteFood().add("치킨");
-            member.getFavoriteFood().add("족발");
-            member.getFavoriteFood().add("피자");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "old1", "10003"));
-            member.getAddressHistory().add(new AddressEntity("ol2", "old2", "10005"));
-
-            entityManager.persist(member);
+            List<Member> resultList = entityManager.createQuery("select m from Member as m where m.username like '%kim%' ", Member.class)
+                                                   .getResultList();
+            for (Member member : resultList) {
+                System.out.println(member.getUsername());
+            }
             tx.commit();
 
 

@@ -13,6 +13,14 @@ public class AddressEntity {
 
     private Address address;
 
+    public AddressEntity() {
+    }
+
+    public AddressEntity(Long id, Address address) {
+        this.id = id;
+        this.address = address;
+    }
+
     public AddressEntity(String city, String street, String zipcode) {
         Address address1 = new Address(city, street, zipcode);
         this.address = address1;
